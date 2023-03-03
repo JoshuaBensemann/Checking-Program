@@ -100,12 +100,10 @@ public class ExperimentParameters {
 		JLabel jl = new JLabel(
 		        "<html>Do you have a documented disability?:"
 		        + "</b><br><br></html>");  
-
 		jl.setFont(font);
 		jp.add(jl, BorderLayout.NORTH);
 		JComboBox<?> jc = new JComboBox<Object>(yesNo);
 		jc.setSelectedIndex(0);
-
 		jc.setFont(font);
 		jp.add(jc, BorderLayout.SOUTH);
     	
