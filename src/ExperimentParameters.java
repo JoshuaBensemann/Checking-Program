@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Enumeration;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -23,7 +22,7 @@ import javax.swing.UIManager;
  */
 public class ExperimentParameters {
 	JFrame frame;
-	private String participantNumber; //age, disability, ethnicity, gender, 
+	private String age, disability, ethnicity, gender, language, participantNumber, selected;
 	private int sessionLength;	
 	private javax.swing.plaf.FontUIResource font;
 	
@@ -34,14 +33,14 @@ public class ExperimentParameters {
 		setUIFont(font);
 		setParticipantNumber();
 		setLength();
-		//getParticipantDetails();
+		getParticipantDetails();
 		//displayBriefing();
 		recordParameters();
 
 	}
 	
 	private static void setUIFont (javax.swing.plaf.FontUIResource f){
-	    Enumeration<Object> keys = UIManager.getDefaults().keys();
+	    java.util.Enumeration keys = UIManager.getDefaults().keys();
 	    while (keys.hasMoreElements()) {
 	      Object key = keys.nextElement();
 	      Object value = UIManager.get (key);
@@ -62,13 +61,12 @@ public class ExperimentParameters {
 	 * 
 	 */
 	private void setLength() {
-		String length = JOptionPane.showInputDialog(null, "Enter Session Length (mins).", "40");
+		String length = JOptionPane.showInputDialog(null, "Enter Session Length (mins).", "45");
 		sessionLength = Integer. parseInt(length);
 		sessionLength = sessionLength * 60;
 		
 	}
-
-/*
+	
 	private void getParticipantDetails() {
     	JOptionPane.showMessageDialog(null, "Click ok to enter participant information.");
     	
@@ -103,7 +101,7 @@ public class ExperimentParameters {
 
 		jl.setFont(font);
 		jp.add(jl, BorderLayout.NORTH);
-		JComboBox<?> jc = new JComboBox<Object>(yesNo);
+		JComboBox jc = new JComboBox(yesNo);
 		jc.setSelectedIndex(0);
 
 		jc.setFont(font);
@@ -120,9 +118,87 @@ public class ExperimentParameters {
 				disability = null;
 			}
 		}
+		/*
+		jp = new JPanel();
+		jp.setLayout(new BorderLayout());
+		jl = new JLabel(
+		        "<html>Do you have prior exposure to character-based languages?:"
+		        + "</b><br><br></html>");  
+
+		jl.setFont(font);
+		jp.add(jl, BorderLayout.NORTH);
+		jc = new JComboBox(yesNo);
+		jc.setSelectedIndex(0);
+
+		jc.setFont(font);
+		jp.add(jc, BorderLayout.SOUTH);		
+		
+		
+		language = null;
+		
+		while (language == null || language == "Please select") {
+			if (JOptionPane.showConfirmDialog(frame, jp, "Language", 
+			        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE)  == 0) {
+				language = jc.getSelectedItem().toString();
+			}
+			else {
+				language = null;
+			}
+			
+		}
+		*/
 		
 	}
-*/
+	
+	/*
+	private void displayBriefing() {
+		
+		boolean correct = false;
+		
+		String briefingText = "<html>Thank you for participating in this study. This study involves learning the names of shapes.<br>"
+				    + "Once the study begins, a shape will appear on screen and next to it will be five names. Choose <br>"
+				    + "the name that you think belongs to the shape. To select the name of the shape, use the computer <br>"
+				    + "mouse and click once on the name you think belongs to the shape; you can only make one selection <br>"
+				    + "per trial. Use only the computer mouse.  Do not use the touch screen option. Following every <br>"
+				    + "trial, you will receive onscreen feedback for a short period of time whether you selected the <br>"
+				    + "correct name for the shape. The feedback will appear directly beneath the shape. Following the <br>"
+				    + "feedback, there will be a short pause before the start of the next trial. Once you have completed<br>"
+				    + "all of the trials, further instructions will be provided onscreen. The study should take <br>"
+				    + "approximately 60 minutes to complete. If you have any questions, raise your hand and wait in your <br>"
+				    + "seat until the researcher comes over and answers your question. Once you have finished the experiment,<br>"
+				    + "raise your hand and the researcher will provide you with further instructions.<br><br>"
+				    + "You may begin when you are ready.<br><br>"
+				    + "How often will you receive feedback?</html>";
+		
+		Object[] quiz = {"Please select", "Following every 3rd trial", "Following every trial", "Following every 10th trial", "Never"};
+		
+		JPanel jp = new JPanel();
+		jp.setLayout(new BorderLayout());
+		JLabel jl = new JLabel(briefingText);  
+
+		jl.setFont(font);
+		jp.add(jl, BorderLayout.NORTH);
+		JComboBox jc = new JComboBox(quiz);
+		jc.setSelectedIndex(0);
+
+		jc.setFont(font);
+		jp.add(jc, BorderLayout.SOUTH);
+		
+		while (!correct) {
+			String answer = null;
+			if (JOptionPane.showConfirmDialog(frame, jp, "Briefing", 
+			        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE)  == 0) {
+				answer = jc.getSelectedItem().toString();
+			}
+			
+			correct = answer == "Following every trial";	
+			
+		}
+		
+		JOptionPane.showMessageDialog(null, "Click ok when you are ready to begin.");
+	
+	}
+	*/
 	
 	private void recordParameters() {	
 		DataRecorder parameterFile = null;
@@ -137,12 +213,11 @@ public class ExperimentParameters {
     	Date date = new Date();
     	String recorded_date = dateFormat.format(date);
         
-    	//String toPrint = String.format("Participant Number: %s%nSession_Length: %d%nDate %s%nAge: %s%nGender: %s%nEthnicity: %s%nDisability: %s%n", participantNumber, sessionLength/60, recorded_date, age, gender, ethnicity, disability);
-    	String toPrint = String.format("Participant Number: %s%nSession_Length: %d%nDate %s%n", participantNumber, sessionLength/60, recorded_date);
+    	String toPrint = String.format("Participant Number: %s%nSession_Length: %d%nDate %s%nAge: %s%nGender: %s%nEthnicity: %s%nDisability: %s%n", participantNumber, sessionLength/60, recorded_date, age, gender, ethnicity, disability);
         String[] data = new String[] {toPrint};
         
         parameterFile.recordEvent(data);
-        //parameterFile.stopRecording();
+        parameterFile.stopRecording();
 		
 	}
 	

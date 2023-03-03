@@ -3,28 +3,21 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.Border;
 
-@SuppressWarnings("serial")
 public class CheckingTask extends JFrame implements ActionListener  {
 	private CheckImage check;
 	private TaskPanel entry;
 	private HashMap<String,Integer> settings;
 	private DataRecorder logger;
-	private SimpleDateFormat formatter;
 	private Timer sessionTimer;
 	private double checkValue;
-	private String checkWords, valueString, participantNumber;
+	private String checkWords, valueString, participantNumber, filePath;
 	private long sessionStart, trialStart, trialEnd;
 	private float secondsElapsed;
 	private int SCREEN_WIDTH, SCREEN_HEIGHT, ENTRY_WIDTH, ENTRY_FONT_SIZE,
@@ -38,7 +31,6 @@ public class CheckingTask extends JFrame implements ActionListener  {
 		loadConfigFile();
 		openWindow();	
 		startSequence(TEXT_FONT_SIZE);
-		clickToStart();
 		setupRecorder();
 		setupGUI();	
 		setupTimers();
@@ -85,13 +77,11 @@ public class CheckingTask extends JFrame implements ActionListener  {
 		ExperimentParameters e = new ExperimentParameters(fontSize);
 		participantNumber = e.getParticipantNumber();
 		sessionLength = e.getSessionLength();	
-		
 
 	}
 	
 	
 	private void setupRecorder() {
-		formatter = new SimpleDateFormat("HH:mm:ss.SSS");
 		
 		try {
 			logger = new DataRecorder(participantNumber + "RawData.csv");
@@ -101,7 +91,7 @@ public class CheckingTask extends JFrame implements ActionListener  {
 			
 		}	
 		
-		String[] data = {"Value", "Entered", "Correct", "Latency_(ms)", "Session_Time", "Time_Stamp"};	
+		String[] data = {"Value", "Entered", "Correct", "Latency_(ms)"};	
 		logger.recordEvent(data);
 		
 	}
@@ -133,7 +123,7 @@ public class CheckingTask extends JFrame implements ActionListener  {
 		entry.setBorder(blackline);
 		add(entry);
 		entry.setBounds((int) ENTRY_LOCATION.getX(), (int) ENTRY_LOCATION.getY(), ENTRY_WIDTH, IMAGE_HEIGHT);
-		entry.textEntry.requestFocusInWindow();
+		
 	}
 	
 	
@@ -145,10 +135,6 @@ public class CheckingTask extends JFrame implements ActionListener  {
             }
 
         });
-	}
-	
-	private void clickToStart() {
-		JOptionPane.showMessageDialog(null, "Click ok when you are ready to begin.");
 	}
 	
 	protected void checkForEnd() {
@@ -185,9 +171,7 @@ public class CheckingTask extends JFrame implements ActionListener  {
 			correct++;
 		}
 		
-		secondsElapsed = (System.currentTimeMillis() - sessionStart) / 1000F;
-		
-		String[] data = {valueString, entered, Boolean.toString(result), Long.toString(trialEnd-trialStart), Float.toString(secondsElapsed), formatter.format(System.currentTimeMillis())};	
+		String[] data = {valueString, entered, Boolean.toString(result), Long.toString(trialEnd-trialStart)};	
 		logger.recordEvent(data);
 		
 		startTrial();
@@ -195,45 +179,8 @@ public class CheckingTask extends JFrame implements ActionListener  {
 	}
 	
 	
-	private void endScreen() {
-		
-		JPanel panel = new JPanel();
-		//panel.setBackground(new Color(195, 255, 192));
-		add(panel);
-		panel.setBounds((int) IMAGE_LOCATION.getX(), (int) IMAGE_LOCATION.getY(), IMAGE_WIDTH + IMAGE_ENTRY_GAP + ENTRY_WIDTH, IMAGE_HEIGHT);
-
-	      JTextField exitCodeText = new JTextField("Please Wait");
-	      int exitCode = 0;
-
-	      JPanel myPanel = new JPanel();
-	      myPanel.add(new JLabel("P:"));
-	      myPanel.add(exitCodeText);
-
-	      boolean valid = false;
-	      
-	      while (!valid) {
-	         int result = JOptionPane.showConfirmDialog(null, myPanel, 
-	                  "Please wait for the experimenter", JOptionPane.OK_CANCEL_OPTION);
-	         if (result == JOptionPane.OK_OPTION) {
-	        	 try {
-	        		 exitCode =  Integer.parseInt(exitCodeText.getText());
-	     		} catch (Exception e) {
-	     			exitCode = 0;
-	     		}
-	   
-	            if (exitCode == -1) {
-	            	valid = true;
-	            }
-
-	         }
-	    	  
-	      }
-
-		}	
-	
-	
 	private void endTask() {
-		//logger.stopRecording();
+		logger.stopRecording();
 			
 		try {
 			logger = new DataRecorder(participantNumber + "ProcessedData.csv");
@@ -248,8 +195,7 @@ public class CheckingTask extends JFrame implements ActionListener  {
         String[] data = new String[] {toPrint};
 
 		logger.recordEvent(data);
-		//logger.stopRecording();
-		endScreen();
+		logger.stopRecording();
 		
 		System.exit(0);
 		

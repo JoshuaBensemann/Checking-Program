@@ -8,7 +8,7 @@ import javax.swing.SwingUtilities;
  */
 
 
-/**.
+/**
  * @author Joshua Bensemann
  *
  */
@@ -27,7 +27,6 @@ public class RunTask implements Runnable {
 	 */
 	@Override
 	public void run() {		
-		@SuppressWarnings("unused")
 		CheckingTask t = new CheckingTask();
 		
 	}
