@@ -17,19 +17,20 @@ public class DataRecorder {
 	
 	public DataRecorder(String filepath) throws IOException {
 		this.filePath = filepath;
-		fileWriter = new FileWriter(filePath, true);
-		recorder = new PrintWriter(fileWriter);	
-		
 	}
 	
 	public void recordEvent(String[] data) {
-		recorder.println(String.join(",", data));
+		try {
+			fileWriter = new FileWriter(filePath, true);
+			recorder = new PrintWriter(fileWriter);	
+			recorder.println(String.join(",", data));
+			recorder.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 
 	}
-	
-	public void stopRecording() {
-		recorder.close();
-		
-	}
-	
+
 }

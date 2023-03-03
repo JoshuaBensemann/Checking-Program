@@ -1,5 +1,4 @@
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -7,6 +6,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+@SuppressWarnings("serial")
 public class CheckImage extends JPanel {
 	private String value, words, name;
 	private Font basicFont, fieldFont;
@@ -46,7 +46,7 @@ public class CheckImage extends JPanel {
         super.paintComponent(g);
         checkValue.setText(value);
         name = names.getName();
-        
+    
         Graphics2D g2 = (Graphics2D) g;        
         g2.setStroke(new BasicStroke(3));
         g2.drawLine(LINES_START_X, LINE_ONE_Y, LINE_ONE_END, LINE_ONE_Y);
@@ -61,7 +61,7 @@ public class CheckImage extends JPanel {
         g2.drawString("$", LINE_ONE_END + TEXTFIELD_GAP - 20, LINE_ONE_Y - LINE_WORD_GAP);
         g2.drawString(name, LINES_START_X + LINE_INDENT, LINE_ONE_Y - LINE_WORD_GAP);
         g2.drawString(words, LINES_START_X + LINE_INDENT, LINE_TWO_Y - LINE_WORD_GAP);
-                
+          
     }
 	
 	

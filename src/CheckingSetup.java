@@ -1,14 +1,12 @@
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Random;
-import java.util.Scanner;
 
 public class CheckingSetup {
 	public static double getRandomValue() {
 		Random doubleGenerator = new Random();
 		DecimalFormat df = new DecimalFormat("#.##");    
 		
-		double randomValue = 10 + (999.99 - 10) * doubleGenerator.nextDouble();     
+		double randomValue = 100 + (999.99 - 100) * doubleGenerator.nextDouble();     
 		randomValue = Double.valueOf(df.format(randomValue));
 
 		return randomValue;
@@ -28,30 +26,7 @@ public class CheckingSetup {
 	}
 
 	public static void main(String[] args) {
-	/*
-		DataRecorder logger = null;
-		
-		try {
-			logger = new DataRecorder("test.txt");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		for (int i = 0; i < 5; i++) {
-			long system_start = System.currentTimeMillis();
-			double value = getRandomValue();
-			double inputDouble = getInputValue();
-			long system_end = System.currentTimeMillis();
-			
-			boolean result = value == inputDouble;
-			System.out.println("Trial Result:" + result);
-			String[] data = {Double. toString(value), Double. toString(inputDouble), Boolean.toString(result), Long.toString(system_end-system_start)};
-			logger.recordEvent(data);
-		}
-		
-		logger.stopRecording();
-	*/	
+
 	}
 
 }
