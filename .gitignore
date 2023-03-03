@@ -1,2 +1,12 @@
+<<<<<<< HEAD
 *Data.csv
 *.txt
+=======
+/bin/
+*.txt
+003ProcessedData.csv
+*.csv
+*.class
+*.class
+*.class
+>>>>>>> parent of 461aa53 (Revert "Updated End Screen")
